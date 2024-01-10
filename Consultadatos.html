@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro y Consulta de Datos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="encabezado">
+        <img src="Lastica (3).png" alt="Descripción de la imagen">
+    </div>
+
+    <div class="container">
+
+        <button class="iniciocdg" onclick="window.location.href='Index.html'"></button>
+        <button class="cdg-rdg" onclick="window.location.href='Controldegastos.html'"></button>
+
+
+        <h2>Consulta de Datos</h2>
+        <div class="consult-boxes">
+            <label for="selectCliente">Seleccione Cliente:</label>
+            <select id="selectCliente" onchange="buscarDatos()">
+                <option value="">Seleccionar Cliente</option>
+            </select><br><br>
+             <button onclick="eliminarCliente()">Eliminar Cliente</button><br><br>
+             
+
+            <label for="selectProyecto">Seleccione Proyecto:</label>
+            <select id="selectProyecto" onchange="buscarDatos()">
+                <option value="">Seleccionar Proyecto</option>
+            </select><br><br>
+            <button onclick="eliminarProyecto()">Eliminar Proyecto</button><br><br>
+
+            <button id="buscarButton">Buscar</button>
+             
+  
+        <h2>Consulta de Datos por Mes</h2>
+        <div class="consult-boxes">
+            <label for="selectMes">Seleccione Mes:</label>
+            <select id="selectMes">
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+
+                
+               
+            </select>
+            <button onclick="buscarPorMes()">Buscar</button><br><br>
+
+            <h2>Consulta de Datos por Área</h2>
+            <div class="consult-boxes">
+                <label for="selectArea">Seleccione Área:</label>
+                <select id="selectArea">
+                    <option value="Control">Control</option>
+                    <option value="Construcción">Construcción</option>
+                    <option value="Electricidad">Electricidad</option>
+                    <option value="Fabricación">Fabricación</option>
+                    <option value="Taller">Taller</option>
+                </select>
+                <button onclick="buscarPorArea()">Buscar</button><br><br>
+    
+            <div id="resultadoConsulta"></div>
+        </div>
+
+    </div>
+    
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+
+<script>
+
+function eliminarCliente() {
+    var clienteSeleccionado = document.getElementById("selectCliente").value;
+
+    var datosGuardados = localStorage.getItem("datos");
+    if (datosGuardados) {
+        datosGuardados = JSON.parse(datosGuardados);
+
+        datosGuardados = datosGuardados.filter(function (datos) {
+            return datos.cliente !== clienteSeleccionado;
+        });
+
+        localStorage.setItem("datos", JSON.stringify(datosGuardados));
+        actualizarClientes(); 
+        limpiarResultados(); 
+    }
+}
+
+function eliminarProyecto() {
+    var proyectoSeleccionado = document.getElementById("selectProyecto").value;
+
+    var datosGuardados = localStorage.getItem("datos");
+    if (datosGuardados) {
+        datosGuardados = JSON.parse(datosGuardados);
+
+        datosGuardados = datosGuardados.filter(function (datos) {
+            return datos.proyecto !== proyectoSeleccionado;
+        });
+
+        localStorage.setItem("datos", JSON.stringify(datosGuardados));
+        actualizarProyectos(); 
+        limpiarResultados();
+    }
+}
+
+function eliminarArea() {
+    var AreaSeleccionada = document.getElementById("selectArea").value;
+
+    var datosGuardados = localStorage.getItem("datos");
+    if (datosGuardados) {
+        datosGuardados = JSON.parse(datosGuardados);
+
+        datosGuardados = datosGuardados.filter(function (datos) {
+            return datos.area !== AreaSeleccionada;
+        });
+
+        localStorage.setItem("datos", JSON.stringify(datosGuardados));
+        actualizarListas();
+    }
+}
+
+
+    function actualizarProyectos() {
+    var selectProyecto = document.getElementById("selectProyecto");
+    selectProyecto.innerHTML = '<option value="">Seleccionar Proyecto</option>';
+
+    var datosGuardados = localStorage.getItem("datos");
+    if (datosGuardados) {
+        datosGuardados = JSON.parse(datosGuardados);
+
+        var proyectos = {};
+        datosGuardados.forEach(function (datos) {
+            proyectos[datos.proyecto] = true;
+        });
+
+        Object.keys(proyectos).forEach(function (proyecto) {
+            var opcionProyecto = document.createElement("option");
+            opcionProyecto.text = proyecto;
+            selectProyecto.add(opcionProyecto);
+        });
+    }
+
+}
+
+function actualizarClientes() {
+        var selectCliente = document.getElementById("selectCliente");
+
+        // Limpiar opciones existentes
+        selectCliente.innerHTML = '<option value="">Seleccionar Cliente</option>';
+
+        // Obtener clientes del almacenamiento local
+        var datosGuardados = localStorage.getItem("datos");
+        if (datosGuardados) {
+            var datos = JSON.parse(datosGuardados);
+            var clientes = {};
+
+            // Iterar sobre los datos para obtener los clientes únicos
+            datos.forEach(function (dato) {
+                clientes[dato.cliente] = true;
+            });
+
+            // Agregar clientes únicos al select
+            Object.keys(clientes).forEach(function (cliente) {
+                var opcionCliente = document.createElement("option");
+                opcionCliente.text = cliente;
+                selectCliente.add(opcionCliente);
+            });
+        }
+    }
+
+    // Llamar a la función para actualizar clientes cuando se cargue la página
+    document.addEventListener('DOMContentLoaded', function () {
+        actualizarClientes();
+    });
+
+    
+    function buscarDatos() {
+    var clienteSeleccionado = document.getElementById("selectCliente").value;
+    var proyectoSeleccionado = document.getElementById("selectProyecto").value;
+
+    var datosGuardados = localStorage.getItem("datos");
+    if (datosGuardados) {
+        datosGuardados = JSON.parse(datosGuardados);
+
+        datosFiltrados = datosGuardados.filter(function (datos) {
+            return (!clienteSeleccionado || datos.cliente === clienteSeleccionado) &&
+                (!proyectoSeleccionado || datos.proyecto === proyectoSeleccionado);
+        });
+
+        const resultadosJSON = JSON.stringify(datosFiltrados);
+
+        // Crear URL con parámetros de búsqueda
+        const params = new URLSearchParams();
+        params.append('resultados', resultadosJSON);
+
+        // Redireccionar a la página de resultados con los parámetros,
+        // solo cuando se haga clic en el botón "Buscar"
+        window.location.href = `resultados .html?${params.toString()}`;
+    }
+}
+
+// En lugar de escuchar cambios en los selectores,
+// llama a buscarDatos() cuando se haga clic en el botón "Buscar"
+document.getElementById("buscarButton").addEventListener("click", function() {
+    buscarDatos();
+});
+
+        document.getElementById("selectCliente").addEventListener("change", function() {
+            limpiarResultados();
+        });
+
+        document.getElementById("selectProyecto").addEventListener("change", function() {
+            limpiarResultados();
+        });
+        let datosFiltrados = [];
+        function limpiarResultados() {
+            document.getElementById("resultadoConsulta").innerHTML = "";
+}  
+
+    function buscarPorMes() {
+        var mesSeleccionado = document.getElementById("selectMes").value;
+
+            var datosGuardados = localStorage.getItem("datos");
+            if (datosGuardados) {
+                datosGuardados = JSON.parse(datosGuardados);
+
+                var resultados = datosGuardados.filter(function (datos) {
+                    var fecha = new Date(datos.fecha);
+                    return fecha.getMonth() + 1 === parseInt(mesSeleccionado);
+                });
+
+                mostrarResultados(resultados);
+            }
+        }
+        function buscarPorArea() {
+            var areaSeleccionada = document.getElementById("selectArea").value;
+
+            var datosGuardados = localStorage.getItem("datos");
+            if (datosGuardados) {
+                datosGuardados = JSON.parse(datosGuardados);
+
+                var resultados = datosGuardados.filter(function (datos) {
+                    return datos.area === areaSeleccionada;
+                });
+
+                mostrarResultados(resultados);
+            }
+        }
+
+        function mostrarResultados(resultados) {
+        var resultadoConsulta = document.getElementById("resultadoConsulta");
+        resultadoConsulta.innerHTML = "";
+
+        var resultadosUnicos = [];
+        resultados.forEach(function (datos) {
+            var existe = resultadosUnicos.some(function (resultado) {
+                return resultado.cliente === datos.cliente && resultado.proyecto === datos.proyecto;
+            });
+
+            if (!existe) {
+                resultadosUnicos.push(datos);
+            }
+        });
+
+        if (resultadosUnicos.length > 0) {
+            var listaResultados = document.createElement("ul");
+            var sumaMontos = 0;
+
+            resultadosUnicos.forEach(function (datos) {
+                sumaMontos += parseFloat(datos.monto);
+                var item = document.createElement("li");
+                item.textContent = `Cliente: ${datos.cliente}, Proyecto: ${datos.proyecto}, Proveedor: ${datos.proveedor}, Fecha: ${datos.fecha}, Area: ${datos.area}, Monto: ${datos.monto}`;
+                listaResultados.appendChild(item);
+            });
+
+            var totalMonto = document.createElement("p");
+            totalMonto.textContent = `Suma de montos: ${sumaMontos.toFixed(2)}`; // Mostrar la suma de los montos
+            resultadoConsulta.appendChild(totalMonto);
+
+            resultadoConsulta.appendChild(listaResultados);
+        } else {
+            resultadoConsulta.textContent = "No se encontraron resultados.";
+        }
+    }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    actualizarClientes(); 
+    actualizarProyectos(); 
+ 
+});
+
+        actualizarListasConsulta();
+    
+    </script>
+</body>
+</html> 

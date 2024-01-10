@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro de Cliente</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="encabezado">
+        <img src="Lastica.png" alt="Descripción de la imagen">
+
+    </div>
+
+<div class="container">
+    <button class="iniciordc" onclick="window.location.href='Index.html'"></button>
+    <h2>Registro de Cliente</h2>
+    <input type="text" id="nuevoClienteInput">
+    <button type="button" onclick="guardarCliente()">Guardar Cliente</button>
+</div>
+<script src="script.js"></script>
+
+</body>
+</html>
+
+<script>
+        function guardarCliente() {
+            var nuevoCliente = document.getElementById("nuevoClienteInput").value;
+
+            if (nuevoCliente.trim() !== '') {
+                actualizarClientes(nuevoCliente);
+                window.location.href = "Index.html";
+            } else {
+                alert('Por favor, ingresa un nombre válido para el cliente.');
+            }
+        }
+
+        function actualizarClientes(cliente) {
+            var clientesGuardados = localStorage.getItem("clientes");
+            var clientes = clientesGuardados ? JSON.parse(clientesGuardados) : [];
+            if (!clientes.includes(cliente)) {
+                clientes.push(cliente);
+                localStorage.setItem("clientes", JSON.stringify(clientes));
+            }
+        }
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarClientesGuardados();
+    });
+
+
+</script>

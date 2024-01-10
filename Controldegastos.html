@@ -1,0 +1,302 @@
+
+
+User
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registro y Consulta de Datos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="encabezado">
+        <img src="Lastica (4).png" alt="Descripción de la imagen">
+
+    </div>
+
+    <div class="container">
+
+        <button class="iniciordg" onclick="window.location.href='Index.html'"></button>
+        <button class="rdg-cdg" onclick="window.location.href='Consultadatos.html'"></button>
+
+
+        <h1>Registro de Datos</h1>
+        <form id="data-form">
+
+            <label for="cliente">Cliente:</label>
+            <select id="selectCliente">
+                <option value="">Selecciona un Cliente</option>
+                <button onclick="eliminarClienteRegistro()">Eliminar Cliente</button><br><br>
+            </select><br><br>
+
+
+
+
+            <label for="proyecto">Proyecto:</label>
+            <input type="text" id="proyectoInput" required><br><br>
+
+            <label for="proveedor">Proveedor:</label>
+            <input type="text" id="proveedorInput" required><br><br>
+
+            <label for="monto">Monto:</label>
+            <input type="number" id="montoInput" required><br><br>
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fechaInput" required><br><br>
+
+            <label for="area">Área:</label>
+            <select id="areaInput" required>
+                <option value="">Selecciona un área</option>
+                <option value="Control">Control</option>
+                <option value="Construcción">Construcción</option>
+                <option value="Electricidad">Electricidad</option>
+                <option value="Fabricación">Fabricación</option>
+                <option value="Taller">Taller</option>
+        
+            </select>
+            <br><br>
+
+            <button type="button" onclick="guardarDatos()">Guardar</button>
+        </form>
+
+    </div>
+    <script src="script.js"></script>
+   </div>
+</body>
+</html>
+
+<script>
+
+function eliminarCliente() {
+    var clienteSeleccionado = document.getElementById("selectCliente").value;
+
+    var datosGuardados = localStorage.getItem("datos");
+    if (datosGuardados) {
+        datosGuardados = JSON.parse(datosGuardados);
+
+        datosGuardados = datosGuardados.filter(function (datos) {
+            return datos.cliente !== clienteSeleccionado;
+        });
+
+        localStorage.setItem("datos", JSON.stringify(datosGuardados));
+        actualizarClientes(); 
+        limpiarResultados(); 
+    }
+}
+
+
+    function guardarCliente() {
+        var nuevoCliente = document.getElementById("nuevoClienteInput").value;
+
+        if (nuevoCliente.trim() !== '') {
+            actualizarClientes(nuevoCliente);
+            window.location.href = "Index.html";
+        } else {
+            alert('Por favor, ingresa un nombre válido para el cliente.');
+        }
+    }
+
+    function actualizarClientes(cliente) {
+        var selectCliente = document.getElementById("selectCliente");
+        var option = document.createElement("option");
+        option.text = cliente;
+        selectCliente.appendChild(option);
+
+     
+        var clientesGuardados = localStorage.getItem("clientes");
+        var clientes = clientesGuardados ? JSON.parse(clientesGuardados) : [];
+        if (!clientes.includes(cliente)) {
+            clientes.push(cliente);
+            localStorage.setItem("clientes", JSON.stringify(clientes));
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarClientesGuardados();
+        actualizarListasConsulta();
+    });
+
+ 
+    function cargarClientesGuardados() {
+        var selectCliente = document.getElementById("selectCliente");
+        var clientesGuardados = localStorage.getItem("clientes");
+        if (clientesGuardados) {
+            var clientes = JSON.parse(clientesGuardados);
+            clientes.forEach(function(cliente) {
+                var option = document.createElement("option");
+                option.text = cliente;
+                selectCliente.appendChild(option);
+            });
+        }
+    }
+
+    function guardarCliente() {
+            var nuevoCliente = document.getElementById("nuevoClienteInput").value;
+
+            if (nuevoCliente.trim() !== '') {
+                actualizarClientes(nuevoCliente);
+                window.location.href = "pagina_inicial.html";
+            } else {
+                alert('Por favor, ingresa un nombre válido para el cliente.');
+            }
+        }
+
+        function actualizarClientes(cliente) {
+            var clientesGuardados = localStorage.getItem("clientes");
+            var clientes = clientesGuardados ? JSON.parse(clientesGuardados) : [];
+            if (!clientes.includes(cliente)) {
+                clientes.push(cliente);
+                localStorage.setItem("clientes", JSON.stringify(clientes));
+            }
+        }
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarClientesGuardados();
+    });
+
+  
+    function actualizarListasConsulta() {
+            var datosGuardados = localStorage.getItem("datos");
+            if (datosGuardados) {
+                datosGuardados = JSON.parse(datosGuardados);
+                var clientes = {};
+                var proyectos = {};
+
+                datosGuardados.forEach(function (datos) {
+                    clientes[datos.cliente] = true;
+                    proyectos[datos.proyecto] = true;
+                });
+
+                var selectCliente = document.getElementById("selectCliente");
+                var selectProyecto = document.getElementById("selectProyecto");
+
+
+                selectCliente.innerHTML = '<option value="">Seleccionar Cliente</option>';
+                selectProyecto.innerHTML = '<option value="">Seleccionar Proyecto</option>';
+
+
+                Object.keys(clientes).forEach(function (cliente) {
+                    var opcionCliente = document.createElement("option");
+                    opcionCliente.text = cliente;
+                    selectCliente.add(opcionCliente);
+                });
+
+                Object.keys(proyectos).forEach(function (proyecto) {
+                    var opcionProyecto = document.createElement("option");
+                    opcionProyecto.text = proyecto;
+                    selectProyecto.add(opcionProyecto);
+                });
+            }
+        }
+function limpiarCampos() {
+            document.getElementById("clienteInput").value = "";
+            document.getElementById("proyectoInput").value = "";
+            document.getElementById("proveedorInput").value = "";
+            document.getElementById("montoInput").value = "";
+            
+        }
+
+        function actualizarListas() {
+            var listaAreas = document.getElementById("selectArea");
+            var nuevaArea = document.getElementById("areaInput").value;
+
+            var existeArea = Array.from(listaAreas.options).some(option => option.value === nuevaArea);
+            if (!existeArea) {
+                var opcionNuevaArea = document.createElement("option");
+                opcionNuevaArea.value = nuevaArea;
+                opcionNuevaArea.text = nuevaArea;
+                listaAreas.add(opcionNuevaArea);
+            }
+        }
+
+        document.getElementById("selectCliente").addEventListener("change", function() {
+            limpiarResultados();
+        });
+
+        document.getElementById("selectProyecto").addEventListener("change", function() {
+            limpiarResultados();
+        });
+
+        function limpiarResultados() {
+            document.getElementById("resultadoConsulta").innerHTML = "";
+        }
+
+
+                function buscarPorMes() {
+            var mesSeleccionado = document.getElementById("selectMes").value;
+
+            var datosGuardados = localStorage.getItem("datos");
+            if (datosGuardados) {
+                datosGuardados = JSON.parse(datosGuardados);
+
+                var resultados = datosGuardados.filter(function (datos) {
+                    var fecha = new Date(datos.fecha);
+                    return fecha.getMonth() + 1 === parseInt(mesSeleccionado);
+                });
+
+                mostrarResultados(resultados);
+            }
+        }
+
+        actualizarListas(); 
+
+        function buscarPorArea() {
+            var areaSeleccionada = document.getElementById("selectArea").value;
+
+            var datosGuardados = localStorage.getItem("datos");
+            if (datosGuardados) {
+                datosGuardados = JSON.parse(datosGuardados);
+
+                var resultados = datosGuardados.filter(function (datos) {
+                    return datos.area === areaSeleccionada;
+                });
+
+                mostrarResultados(resultados);
+            }
+        }
+
+
+
+function guardarDatos() {
+
+    window.location.href = "Index.html";
+
+        var nuevoCliente = document.getElementById("selectCliente").value;
+        var proyecto = document.getElementById("proyectoInput").value;
+        var proveedor = document.getElementById("proveedorInput").value;
+        var monto = document.getElementById("montoInput").value;
+        var fecha = document.getElementById("fechaInput").value;
+        var area = document.getElementById("areaInput").value;
+
+        // Aquí guardas tus datos en el almacenamiento local
+
+        // Ejemplo de cómo se podría guardar el cliente
+        var datosGuardados = localStorage.getItem("datos");
+        var datos = datosGuardados ? JSON.parse(datosGuardados) : [];
+
+        // Agregar el nuevo dato a la lista
+        datos.push({
+            cliente: nuevoCliente,
+            proyecto: proyecto,
+            proveedor: proveedor,
+            monto: monto,
+            fecha: fecha,
+            area: area
+        });
+
+        // Guardar los datos actualizados en el almacenamiento local
+        localStorage.setItem("datos", JSON.stringify(datos));
+
+        actualizarListasConsulta();
+limpiarCampos();
+actualizarClientes(cliente); 
+actualizarProyectos();
+    }
+
+        actualizarListasConsulta();
+        limpiarCampos();
+    </script>
+</body>
+</html> 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Control de gastos RICER</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="encabezado">
+        <img src="Inicio.png" alt="Descripción de la imagen">
+    </div>
+
+    <div class="container">
+        <button class="cdg" onclick="window.location.href='Controldegastos.html'"></button>
+        <button class="rdg" onclick="window.location.href='Consultadatos.html'"></button>
+        <button class="rdc" onclick="window.location.href='registrocliente.html'"></button>
+        <button class="rdp" onclick="window.location.href='registroproyectos.html'"></button>
+    </div>
+    <script>
+   
+        window.onload = function() {
+            var sesionIniciada = localStorage.getItem("sesionIniciada");
+
+            if (!sesionIniciada || sesionIniciada !== "true") {
+
+                window.location.href = "login.html";
+            }
+        };
+    </script>
+</body>
+</html>

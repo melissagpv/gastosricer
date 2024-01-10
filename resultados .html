@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados y Descarga</title>
+</head>
+<body>
+    <div id="resultadoConsulta"></div>
+    <button id="botonDescargarExcel">Descargar Excel</button>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.3/xlsx.full.min.js"></script>
+</body>
+</html>
+
+<script>
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const resultadosJSON = urlParams.get('resultados');
+
+    if (resultadosJSON) {
+        const resultados = JSON.parse(resultadosJSON);
+        mostrarResultados(resultados);
+        const botonDescargarExcel = document.getElementById('botonDescargarExcel');
+        botonDescargarExcel.addEventListener('click', function() {
+            descargarExcel(resultados);
+        });
+    } else {
+
+    }
+});
+
+function mostrarResultados(resultados) {
+    const resultadoConsulta = document.getElementById('resultadoConsulta');
+
+    resultados.forEach(function (dato) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Cliente: ${dato.cliente}, Proyecto: ${dato.proyecto}, Proveedor: ${dato.proveedor}, Fecha: ${dato.fecha}, Area: ${dato.area}, Monto: ${dato.monto}`;
+        resultadoConsulta.appendChild(listItem);
+    });
+}
+
+function descargarExcel(resultados) {
+    const wb = XLSX.utils.book_new();
+    const wsData = resultados.map((dato) => [
+        dato.cliente,
+        dato.proyecto,
+        dato.proveedor,
+        dato.fecha,
+        dato.area,
+        dato.monto
+    ]);
+    const ws = XLSX.utils.aoa_to_sheet([
+        ["Cliente", "Proyecto", "Proveedor", "Fecha", "Área", "Monto"],
+        ...wsData
+    ]);
+    XLSX.utils.book_append_sheet(wb, ws, "Consulta");
+
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+    const fileName = 'resultados.xlsx';
+
+    if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, fileName);
+    } else {
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+
+        link.href = url;
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+}
+
+function s2ab(s) {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
+
+</script>

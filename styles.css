@@ -1,0 +1,169 @@
+.encabezado img{
+
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-left: 0%;
+   
+}
+
+.container {
+    top: 20%;
+    left: 40%;
+    text-align: center;
+    position: absolute;
+}
+
+.user {
+
+    color:#ebecff;
+    font-size: 50px;
+}
+
+.userandpaswword {
+
+    color:#ebecff;
+    font-size: 20px;
+}
+
+
+h1, h2 {
+    font-family: Arial, sans-serif;
+}
+
+input[type="text"],
+input[type="number"],
+button {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+button {
+    background-color: #ebecff;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+}
+
+.cdg {
+    position: absolute;
+    top: 65%;
+    left: 37%;
+    transform: translate(-60%, 150%);
+    padding: 100px 200px;
+    background-color: transparent; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rdg {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(50%, 150%);
+    padding: 100px 200px;
+    background-color: transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rdc {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(-70%, 500%);
+    padding: 50px 150px;
+    background-color: transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rdp {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(70%, 500%);
+    padding: 50px 150px;
+    background-color: transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.iniciocdg {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(300%, -600%);
+    padding: 50px 50px;
+    background-color:transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.iniciordg {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(300%, -500%);
+    padding: 50px 50px;
+    background-color:transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.iniciordc {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(690%, -200%);
+    padding: 50px 50px;
+    background-color:transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cdg-rdg {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(120%, -950%);
+    padding: 30px 180px;
+    background-color:transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rdg-cdg {
+    position: absolute;
+    top: 90%;
+    left: 63%;
+    transform: translate(120%, -725%);
+    padding: 30px 180px;
+    background-color:transparent; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+body {
+    background-color: rgb(187, 187, 219);
+}

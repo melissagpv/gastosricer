@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iniciar Sesión - Control de gastos RICER</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="encabezado">
+        <img src="user.png" alt="Descripción de la imagen">
+    </div>
+
+    <div class="container">
+        <h2 class="user">Iniciar Sesión</h2>
+        <form id="login-form">
+            <label for="username" class="userandpaswword">Usuario:</label>
+            <input type="text" id="username" required><br><br>
+            <label for="password" class="userandpaswword">Contraseña:</label>
+            <input type="password" id="password" required><br><br>
+            <button type="button" onclick="validarCredenciales()">Iniciar Sesión</button>
+        </form>
+    </div>
+
+    <script>
+        function validarCredenciales() {
+            var usuario = document.getElementById("username").value;
+            var contraseña = document.getElementById("password").value;
+
+            
+            if (usuario === "admin" && contraseña === "1234") {
+                localStorage.setItem("sesionIniciada", "true");
+                window.location.href = "Index.html";
+      
+      
+      
+            } else {
+                alert("Credenciales incorrectas. Inténtalo de nuevo.");
+            }
+        }
+    </script>
+</body>
+</html>
